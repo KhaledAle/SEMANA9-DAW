@@ -1,23 +1,57 @@
 # Práctica Semana 09 - Desarrollo Web Fullstack
 
-[INSERTAR ENLACE DE GITHUB AQUÍ]
+Proyecto académico que presenta dos ejemplos sencillos de procesamiento de formularios en el servidor: uno en PHP y otro en JSP. Ambos reciben un nombre y un correo enviados mediante el método `POST`.
 
-## Evidencias
-- [INSERTAR CAPTURA PASO 1]
-- [INSERTAR CAPTURA PASO 2]
-- [INSERTAR CAPTURA PASO 3]
-- [INSERTAR CAPTURA PASO 4]
-- [INSERTAR CAPTURA PASO 5]
+## Contenido del proyecto
 
-## Tabla comparativa técnica
+```text
+SEMANA9-DAW/
+├── index.html             # Formulario de la versión PHP
+├── procesar.php           # Recepción y presentación segura de datos en PHP
+├── config.php             # Configuración de ejemplo para PHP
+├── index.jsp              # Formulario de la versión JSP
+├── procesar.jsp            # Recepción de datos y almacenamiento en sesión
+└── WEB-INF/
+    └── web.xml             # Descriptor de despliegue de la aplicación JSP
+```
+
+## Versión PHP
+
+El formulario de `index.html` envía los campos `nombre` y `correo` a `procesar.php`. El script obtiene los datos con `filter_input()`, comprueba el correo y aplica `htmlspecialchars()` antes de mostrar los valores en la página.
+
+`config.php` contiene valores de ejemplo para representar una configuración local. No se conecta a una base de datos ni es necesario modificarlo para probar el formulario.
+
+### Ejecutar localmente
+
+Se requiere PHP instalado y disponible en la terminal. Desde la carpeta del proyecto, inicia el servidor de desarrollo:
+
+```bash
+php -S localhost:8000
+```
+
+Abre [http://localhost:8000](http://localhost:8000) en el navegador y envía el formulario.
+
+## Versión JSP
+
+`index.jsp` presenta el formulario que envía los datos a `procesar.jsp`. La página de procesamiento obtiene los parámetros con `request.getParameter()`, guarda los valores en la sesión mediante `session.setAttribute()` y muestra los datos guardados.
+
+### Ejecutar en Apache Tomcat
+
+1. Instala un JDK y Apache Tomcat compatible con Servlet 3.1 o superior.
+2. Copia la carpeta del proyecto al directorio `webapps` de Tomcat y renómbrala, por ejemplo, como `semana09`.
+3. Inicia Tomcat y abre `http://localhost:8080/semana09/`.
+
+La aplicación declara `index.jsp` como página de bienvenida en `WEB-INF/web.xml`. Tomcat compila las páginas JSP al ejecutarlas.
+
+## Comparación técnica
 
 | Aspecto | PHP | JSP |
 |---|---|---|
-| Ciclo de vida | Se ejecuta en el servidor mediante el intérprete de PHP; cada solicitud genera un proceso o hilo para procesar la página y luego finaliza. | Se ejecuta en un contenedor JSP/Servlet dentro del servidor de aplicaciones Java; el ciclo de vida está ligado al contenedor y a la gestión de servlets. |
-| Gestión de memoria | La memoria es administrada por el intérprete PHP y suele ser más ligera para aplicaciones simples o de contenido dinámico. | La memoria se maneja en el servidor Java, con mayor control de recursos y mejores capacidades para aplicaciones con mayor carga. |
-| Despliegue | Se despliega normalmente en servidores como Apache, Nginx o PHP-FPM, con configuración directa de hosts virtuales y archivos web. | Se despliega en contenedores de aplicaciones Java (Tomcat, Jetty, GlassFish, etc.) usando un descriptor `web.xml` y estructura de WAR. |
-| Escalabilidad | Es muy buena para aplicaciones web rápidas y pequeñas o medianas, pero puede requerir más configuración para crecimiento horizontal complejo. | Ofrece alta escalabilidad en entornos empresariales, especialmente cuando se integran con frameworks Java, servicios y componentes distribuidos. |
+| Ciclo de vida | El servidor web entrega las solicitudes al intérprete o manejador PHP, que procesa el script para cada solicitud. | El contenedor convierte la página JSP en un servlet y administra su ciclo de vida; las solicitudes posteriores son atendidas por ese servlet. |
+| Gestión de memoria | La administra el proceso que ejecuta PHP; el modelo concreto depende de la configuración del servidor y del manejador utilizado. | La administra la JVM y el contenedor Java, incluyendo la recolección automática de memoria. |
+| Despliegue | Requiere un servidor web con PHP habilitado. En esta práctica puede ejecutarse con el servidor integrado de PHP. | Requiere un contenedor Java, como Tomcat. Las aplicaciones también pueden empaquetarse como archivos WAR. |
+| Escalabilidad | Puede escalarse horizontalmente con varios servidores y un balanceador; depende de la arquitectura y configuración de la aplicación. | Puede escalarse en contenedores Java y complementarse con balanceadores y despliegues en varios nodos; depende de la arquitectura y configuración. |
 
-## Objetivo
+## Alcance
 
-El laboratorio busca comparar la estructura básica y patrones de desarrollo de aplicaciones web backend con PHP y JSP, reforzando la comprensión del flujo de datos, validación de entradas y manejo de sesiones.
+Este proyecto es una práctica introductoria. No implementa persistencia de datos ni autenticación. La versión JSP muestra el uso básico de la sesión con fines didácticos; antes de utilizar entradas de usuarios en una aplicación real, deben agregarse validación y codificación de salida apropiadas.
